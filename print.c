@@ -46,7 +46,6 @@ return (unknow_len);
 }
 return (printed_chars);
 }
-size.c
 #include "main.h"
 /**
 * get_size - Calculates the size to cast the argument
