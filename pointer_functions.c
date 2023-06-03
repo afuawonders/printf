@@ -1,6 +1,6 @@
 #include "main.h"
 /**
-* print_pointer - Prints the value of a pointer variable
+* handlePointer - Prints the value of a pointer variable
 * @types: List a of arguments
 * @buffer: Buffer array to handle print
 * @flags:  Calculates active flags
@@ -9,7 +9,7 @@
 * @size: Size specifier
 * Return: Number of chars printed.
 */
-int print_pointer(va_list types, char buffer[],
+int handlePointer(va_list types, char buffer[],
 int flags, int width, int precision, int size)
 {
 char extra_c = 0, padd = ' ';
@@ -42,7 +42,7 @@ return (pointer(buffer, ind, length,
 width, flags, padd, extra_c, padd_start));
 }
 /**
-* print_non_printable - Prints ascii codes in hexa of non printable chars
+* handleNonPrintable - Prints ascii codes in hexa of non printable chars
 * @types: Lista of arguments
 * @buffer: Buffer array to handle print
 * @flags:  Calculates active flags
@@ -51,7 +51,7 @@ width, flags, padd, extra_c, padd_start));
 * @size: Size specifier
 * Return: Number of chars printed
 */
-int print_non_printable(va_list types, char buffer[],
+int handleNonPrintable(va_list types, char buffer[],
 int flags, int width, int precision, int size)
 {
 int i = 0, offset = 0;
@@ -67,7 +67,7 @@ while (str[i] != '\0')
 if (is_printable(str[i]))
 buffer[i + offset] = str[i];
 else
-offset += append_hexa_code(str[i], buffer, i + offset);
+offset += hexadecimal(str[i], buffer, i + offset);
 i++;
 }
 buffer[i + offset] = '\0';
@@ -83,7 +83,7 @@ return (write(1, buffer, i + offset));
 * @size: Size specifier
 * Return: Numbers of chars printed
 */
-int print_reverse(va_list types, char buffer[],
+int hanleReverse(va_list types, char buffer[],
 int flags, int width, int precision, int size)
 {
 char *str;
@@ -109,7 +109,7 @@ count++;
 return (count);
 }
 /**
-* print_rot13string - Print a string in rot13.
+* handleR13 - Print a string in rot13.
 * @types: Lista of arguments
 * @buffer: Buffer array to handle print
 * @flags:  Calculates active flags
@@ -118,7 +118,7 @@ return (count);
 * @size: Size specifier
 * Return: Numbers of chars printed
 */
-int print_rot13string(va_list types, char buffer[],
+int handleR13(va_list types, char buffer[],
 int flags, int width, int precision, int size)
 {
 char x;

@@ -15,13 +15,14 @@ int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
 int flags, int width, int precision, int size)
 {
 int i, unknow_len = 0, printed_chars = -1;
-fmt_t fmt_types[] = {
-{'c', print_char}, {'s', print_string}, {'%', print_percent},
-{'i', print_int}, {'d', print_int}, {'b', print_binary},
-{'u', print_unsigned}, {'o', print_octal}, {'x', print_hexadecimal},
-{'X', print_hexa_upper}, {'p', print_pointer}, {'S', print_non_printable},
-{'r', print_reverse}, {'R', print_rot13string}, {'\0', NULL}
-};
+fmt_t fmt_types[] = { {'c', formatTochar}, {'s', formatTostring},
+{'%', formatToPercentage}, {'i', converToint},
+{'d', converToint},
+{'b', handleBinary}, {'u', convertToUnsign},
+{'o', formatOctal}, {'x', convertToHexadecimal},
+{'X', formatToUpperHex}, {'p', handlePointer},
+{'S', handleNonPrintable},
+{'r', hanleReverse}, {'R', handleR13}, {'\0', NULL}};
 for (i = 0; fmt_types[i].fmt != '\0'; i++)
 if (fmt[*ind] == fmt_types[i].fmt)
 return (fmt_types[i].fn(list, buffer, flags, width, precision, size));
@@ -45,25 +46,4 @@ unknow_len += write(1, &fmt[*ind], 1);
 return (unknow_len);
 }
 return (printed_chars);
-}
-#include "main.h"
-/**
-* get_size - Calculates the size to cast the argument
-* @format: Formatted string in which to print the arguments
-* @i: List of arguments to be printed.
-* Return: Precision.
-*/
-int get_size(const char *format, int *i)
-{
-int curr_i = *i + 1;
-int size = 0;
-if (format[curr_i] == 'l')
-size = S_LONG;
-else if (format[curr_i] == 'h')
-size = S_SHORT;
-if (size == 0)
-*i = curr_i - 1;
-else
-*i = curr_i;
-return (size);
 }

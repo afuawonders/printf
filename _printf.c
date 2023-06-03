@@ -7,50 +7,63 @@ void print_buffer(char buffer[], int *buff_ind);
 */
 int _printf(const char *format, ...)
 {
-int i, printed = 0, printed_chars = 0;
-int flags, width, precision, size, buff_ind = 0;
-va_list list;
+int buffer_index = 0;
+int printed_chars = 0;
+int intitial_value;
+int flags;
+int width;
+int precision;
+int printed;
+int size;
+va_list args;
 char buffer[BUFF_SIZE];
 if (format == NULL)
 return (-1);
-va_start(list, format);
-for (i = 0; format && format[i] != '\0'; i++)
+va_start(args, format);
+for (intitial_value = 0; format[intitial_value] != '\0'; intitial_value++)
 {
-if (format[i] != '%')
+if (format[intitial_value] != '%')
 {
-buffer[buff_ind++] = format[i];
-if (buff_ind == BUFF_SIZE)
-print_buffer(buffer, &buff_ind);
-/* write(1, &format[i], 1);*/
+buffer[buffer_index++] = format[intitial_value];
+if (buffer_index == BUFF_SIZE)
+{
+print_buffer(buffer, &buffer_index);
+}
 printed_chars++;
 }
 else
 {
-print_buffer(buffer, &buff_ind);
-flags = get_flags(format, &i);
-width = get_width(format, &i, list);
-precision = get_precision(format, &i, list);
-size = get_size(format, &i);
-++i;
-printed = handle_print(format, &i, list, buffer,
+print_buffer(buffer, &buffer_index);
+intitial_value++;
+flags = myFlags(format, &intitial_value);
+width = myWidth(format, &intitial_value, args);
+precision = myPrecision(format, &intitial_value, args);
+size = mySize(format, &intitial_value);
+printed = handle_print(format, &intitial_value, args, buffer,
 flags, width, precision, size);
 if (printed == -1)
+{
+va_end(args);
 return (-1);
+}
 printed_chars += printed;
 }
 }
-print_buffer(buffer, &buff_ind);
-va_end(list);
+print_buffer(buffer, &buffer_index);
+va_end(args);
 return (printed_chars);
 }
 /**
 * print_buffer - Prints the contents of the buffer if it exist
 * @buffer: Array of chars
-* @buff_ind: Index at which to add next char, represents the length.
+* @buffer_index: Index at which to add next char, represents the length.
 */
-void print_buffer(char buffer[], int *buff_ind)
+void print_buffer(char buffer[], int *buffer_index)
 {
-if (*buff_ind > 0)
-write(1, &buffer[0], *buff_ind);
-*buff_ind = 0;
+int i;
+for (i = 0; i < *buffer_index; i++)
+{
+write(1, &buffer[i], 1);
+}
+*buffer_index = 0;
 }
